@@ -12,15 +12,15 @@ app = FastAPI(title='Recommender',
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    allow_credentials=True,
 )
 
 
 @app.get('/news/user/')
 def get_user_recommendation(user_id: str, last_request_id: str = "", num_articles: int = 15):
-    articles = [user_id, last_request_id, num_articles]
+    articles = recommender.user_recommendations(user_id, last_request_id, num_articles)
     return {'news': articles}
 
 

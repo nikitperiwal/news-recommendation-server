@@ -23,14 +23,15 @@ def persist_to_mongo(items: list, collection_name: str, db_name: str = constants
         print("An exception occurred :", e)
 
 
-def read_from_mongo(collection_name: str, query=None, db_name: str = constants.NEWS_DB):
+def read_from_mongo(collection_name: str, query=None, columns=None, db_name: str = constants.NEWS_DB):
     """
     Retrieves the stored news articles into the MongoDB.
 
     Parameters
     ----------
     collection_name : Name of the collection to read the articles from.
-    query           : Query to filter data while getting data
+    query           : Query to filter data while getting data.
+    columns         : Columns to return.
     db_name         : Name of the MongoDB database to read the articles from.
 
     Returns
@@ -39,7 +40,7 @@ def read_from_mongo(collection_name: str, query=None, db_name: str = constants.N
     """
 
     db = client[db_name]
-    cursor = db[collection_name].find(query)
+    cursor = db[collection_name].find(query, columns)
     return cursor
 
 
