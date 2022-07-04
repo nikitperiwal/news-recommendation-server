@@ -18,6 +18,12 @@ app.add_middleware(
 )
 
 
+@app.get('/user/category/')
+def get_user_recommendation(user_id: str):
+    category = recommender.get_user_categories(user_id)
+    return {'category': category}
+
+
 @app.get('/news/user/')
 def get_user_recommendation(user_id: str, last_request_id: str = "", num_articles: int = 15):
     articles = recommender.user_recommendations(user_id, last_request_id, num_articles)

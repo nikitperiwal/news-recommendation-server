@@ -1,12 +1,18 @@
 from bson.objectid import ObjectId
+from datetime import datetime
 import mongo_utils
 import constants
 import re
 
 
 def fix_articles(news_articles: list):
+    from_format = "%Y-%m-%dT%H:%M:%SZ"
+    to_format = "%M:%S %p on %d %b %Y"
+
     for article in news_articles:
         article["_id"] = str(article["_id"])
+        article["datetime"] = datetime.strptime(article["datetime"], from_format).strftime(to_format)
+        del article["content"]
     return news_articles
 
 
