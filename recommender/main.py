@@ -49,4 +49,4 @@ def post_like_dislike():
 if __name__ == "__main__":
     print("Starting the recommender API")
     # Run app with uvicorn with port and host specified. Host needed for docker port mapping.
-    uvicorn.run(app, port=5000, host="0.0.0.0")
+    uvicorn.run(app, port=8000, host="127.0.0.1")
