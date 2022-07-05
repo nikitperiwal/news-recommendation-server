@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import recommender
@@ -45,7 +46,7 @@ def post_like_dislike():
     pass
 
 
-#if __name__ == "__main__":
-#    print("Starting the recommender API")
-#    # Run app with uvicorn with port and host specified. Host needed for docker port mapping.
-#    uvicorn.run(app, port=5000, host="0.0.0.0")
+if __name__ == "__main__":
+    print("Starting the recommender API")
+    # Run app with uvicorn with port and host specified. Host needed for docker port mapping.
+    uvicorn.run(app, port=5000, host="0.0.0.0")
