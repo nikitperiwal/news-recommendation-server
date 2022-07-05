@@ -1,8 +1,7 @@
-from bson.objectid import ObjectId
-from datetime import datetime
-import mongo_utils
-import constants
 import re
+from datetime import datetime
+from bson.objectid import ObjectId
+from news_recommender import mongo_utils, constants
 
 
 def fix_articles(news_articles: list):

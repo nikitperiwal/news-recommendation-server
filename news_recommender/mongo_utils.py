@@ -1,5 +1,5 @@
-import constants
 from pymongo import MongoClient
+from news_recommender import constants
 
 client = MongoClient(constants.MONGO_URL)
 
