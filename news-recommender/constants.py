@@ -1,4 +1,9 @@
-from secret_keys import mongo_username, mongo_password
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+mongo_username = os.environ["MONGO_USERNAME"]
+mongo_password = os.environ["MONGO_PASSWORD"]
 
 # MongoDB Constants
 MONGO_URL = f"mongodb+srv://{mongo_username}:{mongo_password}@shortly.autde.mongodb.net/?retryWrites=true&w=majority"
