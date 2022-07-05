@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import recommender
+from news_recommender import recommender
 
 # Initiate app instance
 app = FastAPI(title='Recommender',
