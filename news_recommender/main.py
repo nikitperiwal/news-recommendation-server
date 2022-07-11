@@ -17,6 +17,11 @@ app.add_middleware(
 )
 
 
+# TODO
+# 1. Endpoint to clear rec data
+# 2. Figure out POST for list data
+# 3. POST user category
+
 @app.get('/user/category/')
 def get_user_recommendation(user_id: str):
     category = recommender.get_user_categories(user_id)

@@ -67,7 +67,7 @@ def user_recommendations(user_id: str, last_request_id: str, num_articles: int):
     news_articles.sort("datetime", -1).limit(num_articles)
     news_articles = list(news_articles)
 
-    if len(news_articles) > 0:
+    if len(news_articles) > 0 and constants.TEST_MODE != "true":
         record_recommendations(user_id, news_articles)
 
     return fix_articles(news_articles)
