@@ -2,6 +2,7 @@ import re
 from datetime import datetime
 from bson.objectid import ObjectId
 from news_recommender import mongo_utils, constants
+from api_utils import get_user_details, get_prev_recommendations
 
 
 def fix_articles(news_articles: list):
@@ -15,36 +16,6 @@ def fix_articles(news_articles: list):
     return news_articles
 
 
-def get_user_categories(user_id: str):
-    query = {"_id": ObjectId(user_id)}
-    columns = {"_id": 0, "category": 1}
-
-    cursor = mongo_utils.read_from_mongo(
-        collection_name="users",
-        query=query,
-        columns=columns,
-        db_name="user_db"
-    )
-    category = cursor.next()["category"]
-    return category
-
-
-def get_prev_recommendations(user_id: str):
-    query = {"user_id": ObjectId(user_id)}
-    columns = {"_id": 0, "news_id": 1}
-
-    cursor = mongo_utils.read_from_mongo(
-        collection_name="recommendations",
-        db_name="usage_db",
-        query=query,
-        columns=columns
-    )
-    news_ids = list()
-    for data in cursor:
-        news_ids.append(data["news_id"])
-    return news_ids
-
-
 def record_recommendations(user_id: str, news_articles: list):
     data = list()
     for article in news_articles:
@@ -55,8 +26,8 @@ def record_recommendations(user_id: str, news_articles: list):
     mongo_utils.persist_to_mongo(data, collection_name="recommendations", db_name="usage_db")
 
 
-def user_recommendations(user_id: str, last_request_id: str, num_articles: int):
-    category = get_user_categories(user_id)
+def user_recommendations(user_id: str, num_articles: int):
+    category = get_user_details(user_id)["category"]
     prev_news_ids = get_prev_recommendations(user_id)
 
     query = {"$and": [{"category": {"$in": category}}, {"_id": {"$nin": prev_news_ids}}]}

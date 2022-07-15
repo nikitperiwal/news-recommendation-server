@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from news_recommender import recommender
+from news_recommender import recommender, api_utils
 
 # Initiate app instance
 app = FastAPI(title='Recommender',
@@ -17,20 +17,25 @@ app.add_middleware(
 )
 
 
-# TODO
-# 1. Endpoint to clear rec data
-# 2. Figure out POST for list data
-# 3. POST user category
-
-@app.get('/user/category/')
+@app.get('/user/')
 def get_user_recommendation(user_id: str):
-    category = recommender.get_user_categories(user_id)
-    return {'category': category}
+    user_details = api_utils.get_user_details(user_id)
+    return user_details
+
+
+@app.post('/user/')
+def get_user_recommendation(user_details):
+    api_utils.post_user_details(user_details)
+
+
+@app.put('/user/')
+def get_user_recommendation(user_details):
+    api_utils.put_user_details(user_details)
 
 
 @app.get('/news/user/')
 def get_user_recommendation(user_id: str, last_request_id: str = "", num_articles: int = 15):
-    articles = recommender.user_recommendations(user_id, last_request_id, num_articles)
+    articles = recommender.user_recommendations(user_id, num_articles)
     return {'news': articles}
 
 
@@ -47,8 +52,8 @@ def get_searched_news(search_str: str, num_articles: int = 15):
 
 
 @app.post('/usage/like_dislike/')
-def post_like_dislike():
-    pass
+def post_like_dislike(usage_data: list):
+    api_utils.post_usage_data(usage_data)
 
 
 if __name__ == "__main__":
