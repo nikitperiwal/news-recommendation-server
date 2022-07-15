@@ -34,7 +34,7 @@ def get_user_recommendation(user_details):
 
 
 @app.get('/news/user/')
-def get_user_recommendation(user_id: str, last_request_id: str = "", num_articles: int = 15):
+def get_user_recommendation(user_id: str, num_articles: int = 15):
     articles = recommender.user_recommendations(user_id, num_articles)
     return {'news': articles}
 
