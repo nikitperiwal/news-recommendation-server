@@ -1,8 +1,7 @@
 import re
 from datetime import datetime
 from bson.objectid import ObjectId
-from news_recommender import mongo_utils, constants
-from api_utils import get_user_details, get_prev_recommendations
+from news_recommender import mongo_utils, constants, api_utils
 
 
 def fix_articles(news_articles: list):
@@ -27,8 +26,8 @@ def record_recommendations(user_id: str, news_articles: list):
 
 
 def user_recommendations(user_id: str, num_articles: int):
-    category = get_user_details(user_id)["category"]
-    prev_news_ids = get_prev_recommendations(user_id)
+    category = api_utils.get_user_details(user_id)["category"]
+    prev_news_ids = api_utils.get_prev_recommendations(user_id)
 
     query = {"$and": [{"category": {"$in": category}}, {"_id": {"$nin": prev_news_ids}}]}
     news_articles = mongo_utils.read_from_mongo(
