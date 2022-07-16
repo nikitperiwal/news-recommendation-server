@@ -7,7 +7,7 @@ from api_utils import get_user_details, get_prev_recommendations
 
 def fix_articles(news_articles: list):
     from_format = "%Y-%m-%dT%H:%M:%SZ"
-    to_format = "%M:%S %p on %d %b %Y"
+    to_format = "%H:%M %p on %d %b %Y"
 
     for article in news_articles:
         article["_id"] = str(article["_id"])
