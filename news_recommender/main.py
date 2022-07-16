@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
+from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from news_recommender import recommender, api_utils
 
@@ -51,9 +52,19 @@ def get_searched_news(search_str: str, num_articles: int = 15):
     return {'news': articles}
 
 
+class LikeDislike(BaseModel):
+    user_id: str
+    news_id: str
+    value: int
+
+
 @app.post('/usage/like_dislike/')
-def post_like_dislike(usage_data: list):
-    api_utils.post_usage_data(usage_data)
+def post_like_dislike(data: LikeDislike):
+    api_utils.post_usage_data(
+        user_id=data.user_id,
+        news_id=data.news_id,
+        value=data.value,
+    )
 
 
 if __name__ == "__main__":

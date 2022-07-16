@@ -54,5 +54,10 @@ def get_prev_recommendations(user_id: str):
     return news_ids
 
 
-def post_usage_data(usage_data: list):
-    mongo_utils.persist_to_mongo(usage_data, collection_name="like_dislike", db_name="usage_db")
+def post_usage_data(user_id: str, news_id: str, value: int):
+    data = [{
+        "user_id": ObjectId(user_id),
+        "news_id": ObjectId(news_id),
+        "value": value,
+    }]
+    mongo_utils.persist_to_mongo(data, collection_name="like_dislike", db_name="usage_db")
