@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-from news_recommender import recommender, api_utils
+from news_recommender import recommender, api_utils, constants
 
 # Initiate app instance
 app = FastAPI(title='Recommender',
@@ -24,14 +24,20 @@ def get_user_recommendation(user_id: str):
     return user_details
 
 
+class User(BaseModel):
+    user_id: str
+    username: str
+    categories: list = constants.NEWS_CATEGORIES
+
+
 @app.post('/user/')
-def get_user_recommendation(user_details):
-    api_utils.post_user_details(user_details)
+def post_user_recommendation(user: User):
+    api_utils.post_user_details(user)
 
 
 @app.put('/user/')
-def get_user_recommendation(user_details):
-    api_utils.put_user_details(user_details)
+def put_user_recommendation(user: User):
+    api_utils.put_user_details(user)
 
 
 @app.get('/news/user/')

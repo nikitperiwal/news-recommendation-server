@@ -16,23 +16,30 @@ def get_user_details(user_id: str):
     return user
 
 
-def post_user_details(user_details):
+def post_user_details(user):
+    data = [{
+        "user_id": user.user_id,
+        "username": user.username,
+        "categories": user.categories,
+    }]
     mongo_utils.persist_to_mongo(
-        user_details,
+        data,
         collection_name="users",
         db_name="user_db"
     )
 
 
-def put_user_details(user_details):
-    mongo_utils.remove_from_collection(
-        [user_details["user_id"]],
-        collection_name="users",
-        db_name="user_db"
-    )
+def put_user_details(user):
+    user = {
+        "user_id": user.user_id,
+        "username": user.username,
+        "categories": user.categories,
+    }
+    query = {"username": user["username"]}
 
-    mongo_utils.persist_to_mongo(
-        user_details,
+    mongo_utils.replace_in_collection(
+        data=user,
+        query=query,
         collection_name="users",
         db_name="user_db"
     )

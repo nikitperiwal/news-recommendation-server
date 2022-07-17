@@ -71,3 +71,19 @@ def remove_from_collection(id_list: list, collection_name: str, db_name: str = c
 
     db = client[db_name]
     db[collection_name].delete_many({"_id": {"$in": id_list}})
+
+
+def replace_in_collection(data, collection_name: str, query=None, db_name: str = constants.NEWS_DB):
+    """
+    Removes all objects in id_list from the passed collection.
+
+    Parameters
+    ----------
+    data            : Data to replace
+    collection_name : Name of the collection to remove from.
+    query           : Query to filter data while getting data.
+    db_name         : Name of the MongoDB database to drop from.
+    """
+
+    db = client[db_name]
+    db[collection_name].replace_one(query, data)
