@@ -2,9 +2,9 @@ from bson.objectid import ObjectId
 from news_recommender import mongo_utils
 
 
-def get_user_details(user_id: str):
-    query = {"_id": ObjectId(user_id)}
-    columns = {"_id": 0, "category": 1}
+def get_user_details(username: str):
+    query = {"username": ObjectId(username)}
+    columns = {"_id": 0, "username": 1, "category": 1}
 
     cursor = mongo_utils.read_from_mongo(
         collection_name="users",
@@ -18,7 +18,6 @@ def get_user_details(user_id: str):
 
 def post_user_details(user):
     data = [{
-        "user_id": user.user_id,
         "username": user.username,
         "categories": user.categories,
     }]
@@ -31,7 +30,6 @@ def post_user_details(user):
 
 def put_user_details(user):
     user = {
-        "user_id": user.user_id,
         "username": user.username,
         "categories": user.categories,
     }
@@ -45,8 +43,8 @@ def put_user_details(user):
     )
 
 
-def get_prev_recommendations(user_id: str):
-    query = {"user_id": ObjectId(user_id)}
+def get_prev_recommendations(username: str):
+    query = {"username": username}
     columns = {"_id": 0, "news_id": 1}
 
     cursor = mongo_utils.read_from_mongo(
@@ -61,9 +59,9 @@ def get_prev_recommendations(user_id: str):
     return news_ids
 
 
-def post_usage_data(user_id: str, news_id: str, value: int):
+def post_usage_data(username: str, news_id: str, value: int):
     data = [{
-        "user_id": ObjectId(user_id),
+        "username": username,
         "news_id": ObjectId(news_id),
         "value": value,
     }]

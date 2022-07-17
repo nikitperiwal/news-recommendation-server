@@ -19,13 +19,12 @@ app.add_middleware(
 
 
 @app.get('/user/')
-def get_user_recommendation(user_id: str):
-    user_details = api_utils.get_user_details(user_id)
+def get_user_recommendation(username: str):
+    user_details = api_utils.get_user_details(username)
     return user_details
 
 
 class User(BaseModel):
-    user_id: str
     username: str
     categories: list = constants.NEWS_CATEGORIES
 
@@ -41,8 +40,8 @@ def put_user_recommendation(user: User):
 
 
 @app.get('/news/user/')
-def get_user_recommendation(user_id: str, num_articles: int = 15):
-    articles = recommender.user_recommendations(user_id, num_articles)
+def get_user_recommendation(username: str, num_articles: int = 15):
+    articles = recommender.user_recommendations(username, num_articles)
     return {'news': articles}
 
 
@@ -59,7 +58,7 @@ def get_searched_news(search_str: str, num_articles: int = 15):
 
 
 class LikeDislike(BaseModel):
-    user_id: str
+    username: str
     news_id: str
     value: int
 
@@ -67,7 +66,7 @@ class LikeDislike(BaseModel):
 @app.post('/usage/like_dislike/')
 def post_like_dislike(data: LikeDislike):
     api_utils.post_usage_data(
-        user_id=data.user_id,
+        user_id=data.username,
         news_id=data.news_id,
         value=data.value,
     )

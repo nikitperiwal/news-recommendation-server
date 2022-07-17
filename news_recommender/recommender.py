@@ -15,19 +15,19 @@ def fix_articles(news_articles: list):
     return news_articles
 
 
-def record_recommendations(user_id: str, news_articles: list):
+def record_recommendations(username: str, news_articles: list):
     data = list()
     for article in news_articles:
         data.append({
-            "user_id": ObjectId(user_id),
+            "username": username,
             "news_id": article["_id"],
         })
     mongo_utils.persist_to_mongo(data, collection_name="recommendations", db_name="usage_db")
 
 
-def user_recommendations(user_id: str, num_articles: int):
-    category = api_utils.get_user_details(user_id)["category"]
-    prev_news_ids = api_utils.get_prev_recommendations(user_id)
+def user_recommendations(username: str, num_articles: int):
+    category = api_utils.get_user_details(username)["category"]
+    prev_news_ids = api_utils.get_prev_recommendations(username)
 
     query = {"$and": [{"category": {"$in": category}}, {"_id": {"$nin": prev_news_ids}}]}
     news_articles = mongo_utils.read_from_mongo(
@@ -38,7 +38,7 @@ def user_recommendations(user_id: str, num_articles: int):
     news_articles = list(news_articles)
 
     if len(news_articles) > 0 and constants.TEST_MODE != "true":
-        record_recommendations(user_id, news_articles)
+        record_recommendations(username, news_articles)
 
     return fix_articles(news_articles)
 
