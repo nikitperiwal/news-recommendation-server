@@ -26,7 +26,12 @@ def record_recommendations(username: str, news_articles: list):
 
 
 def user_recommendations(username: str, num_articles: int):
-    category = api_utils.get_user_details(username)["category"]
+    user_category = api_utils.get_user_details(username)["category"]
+    category = []
+    for cat in user_category.keys():
+        if user_category[cat] == "true":
+            category.append(cat)
+
     prev_news_ids = api_utils.get_prev_recommendations(username)
 
     query = {"$and": [{"category": {"$in": category}}, {"_id": {"$nin": prev_news_ids}}]}
