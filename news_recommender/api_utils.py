@@ -19,7 +19,7 @@ def get_user_details(username: str):
 def post_user_details(user):
     data = [{
         "username": user.username,
-        "categories": user.categories,
+        "category": user.category,
     }]
     mongo_utils.persist_to_mongo(
         data,
@@ -31,7 +31,7 @@ def post_user_details(user):
 def put_user_details(user):
     user = {
         "username": user.username,
-        "categories": user.categories,
+        "category": user.category,
     }
     query = {"username": user["username"]}
 

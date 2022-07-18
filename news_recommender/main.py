@@ -26,7 +26,7 @@ def get_user_details(username: str):
 
 class User(BaseModel):
     username: str
-    categories: dict = constants.DEFAULT_CATEGORIES
+    category: dict = constants.DEFAULT_CATEGORIES
 
 
 @app.post('/user/')
