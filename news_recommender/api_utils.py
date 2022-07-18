@@ -3,7 +3,7 @@ from news_recommender import mongo_utils
 
 
 def get_user_details(username: str):
-    query = {"username": ObjectId(username)}
+    query = {"username": username}
     columns = {"_id": 0, "username": 1, "category": 1}
 
     cursor = mongo_utils.read_from_mongo(

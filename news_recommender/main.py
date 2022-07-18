@@ -19,23 +19,23 @@ app.add_middleware(
 
 
 @app.get('/user/')
-def get_user_recommendation(username: str):
+def get_user_details(username: str):
     user_details = api_utils.get_user_details(username)
     return user_details
 
 
 class User(BaseModel):
     username: str
-    categories: list = constants.NEWS_CATEGORIES
+    categories: dict = constants.DEFAULT_CATEGORIES
 
 
 @app.post('/user/')
-def post_user_recommendation(user: User):
+def post_user_details(user: User):
     api_utils.post_user_details(user)
 
 
 @app.put('/user/')
-def put_user_recommendation(user: User):
+def put_user_details(user: User):
     api_utils.put_user_details(user)
 
 
@@ -66,7 +66,7 @@ class LikeDislike(BaseModel):
 @app.post('/usage/like_dislike/')
 def post_like_dislike(data: LikeDislike):
     api_utils.post_usage_data(
-        user_id=data.username,
+        username=data.username,
         news_id=data.news_id,
         value=data.value,
     )
